@@ -1,0 +1,39 @@
+thats was in index.php
+
+
+// connect to our MYSQl dataBase
+$config = require_once 'config.php';
+$db = new DataBase($config['database']);
+
+$id = ($_GET['id']);
+// $query = "SELECT * FROM posts WHERE id = {$id} " => this is bad way cause sql injection in url;
+
+$query = "SELECT * FROM posts WHERE id = ? "; //same $query = "SELECT * FROM posts WHERE id = :id "; 
+
+// here we are binding data with [$id])->fetch()
+$posts = $db->query($query, [$id])->fetch();
+
+dd($posts);
+
+// foreach ($posts as $post) {
+//     echo '<li>' . $post['title'] . '</li>';
+// }
+
+
+very important:
+    public folder -> fore document root ,css files and js files
+    php -S localhost:8000 -t public/ ->make the server start from public/
+    in php we can only read post or get request not delete or update or patch 
+        so we will create new router class  to know how to send this as a methods
+
+    now we will create our service Container: here he will make us avoid repeating the creation of db class and his own config    
+    ClassName::class ->will give me string of this class example DataBase::class -> 'DataBase';
+
+
+
+    new sessions:
+        1-session data is temporary so its by default gone when we close the browser
+        2- php --info will give us info about our server
+        3- search in terminal for session.save_path => that's a path of my session
+        4- most cases we don't need to create view for post controllers
+        5- we will search for session hijacking
