@@ -2,6 +2,8 @@
 
 // $_SESSION['name'] = 'bobey';
 
+// dd($_SESSION);
+
 view(
     'index.view.php',
     [
