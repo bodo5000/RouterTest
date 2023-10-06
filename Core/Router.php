@@ -66,7 +66,7 @@ class Router
                 // if ($route['middleware'] === 'auth') {
                 //     (new Auth)->handle();
                 // }
-                return require basePath($route['controller']);
+                return require basePath('Http/Controllers/' . $route['controller']);
             }
         }
 

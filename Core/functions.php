@@ -1,6 +1,7 @@
 <?php
 
-// DAY AND DUMP FUNCTION
+use Core\Session;
+
 function dd($value)
 {
     echo '<pre>';
@@ -45,6 +46,11 @@ function view($path, $params = [])
 }
 
 // echo $_SERVER['REQUEST_URI'];
+function redirect($path)
+{
+    header("Location: {$path}");
+    exit();
+}
 
 function login($user)
 {
@@ -57,11 +63,10 @@ function login($user)
 
 function logout()
 {
-    $_SESSION = [];
+    Session::destroy();
+}
 
-    session_destroy();
-
-    // clear the cookies that exists in the browser
-    $params = session_get_cookie_params();
-    setcookie('PHPSESSID', '', time() - 3600, $params['path'], $params['domain']);
+function old($key, $default = '')
+{
+    return Core\Session::get('old')[$key] ?? $default;
 }

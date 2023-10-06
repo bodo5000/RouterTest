@@ -3,6 +3,7 @@
 session_start();
 
 use Core\Router;
+use Core\Session;
 
 define("BASE_PATH", str_replace('\\', DIRECTORY_SEPARATOR,  __DIR__ . '/../'));
 
@@ -26,5 +27,9 @@ $uri = parse_url($_SERVER['REQUEST_URI'])['path'];
 $method = $_POST['_method'] ?? $_SERVER['REQUEST_METHOD'];
 
 $router->route($uri, $method);
+
+// we ending the errors session after the end of our router
+// just we unset the values and not destroy session cause we don't want to create it every time we have validationError
+Session::unFlash();
 
 // route($uri, $routes);
