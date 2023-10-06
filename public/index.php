@@ -4,6 +4,7 @@ session_start();
 
 use Core\Router;
 use Core\Session;
+use Core\ValidationException;
 
 define("BASE_PATH", str_replace('\\', DIRECTORY_SEPARATOR,  __DIR__ . '/../'));
 
@@ -26,7 +27,13 @@ $routes = require_once basePath('routes.php');
 $uri = parse_url($_SERVER['REQUEST_URI'])['path'];
 $method = $_POST['_method'] ?? $_SERVER['REQUEST_METHOD'];
 
-$router->route($uri, $method);
+try {
+    $router->route($uri, $method);
+} catch (ValidationException $exception) {
+    Session::flash('errors', $exception->errors);
+    Session::flash('old', $exception->old);
+    return redirect($router->previousUrl());
+}
 
 // we ending the errors session after the end of our router
 // just we unset the values and not destroy session cause we don't want to create it every time we have validationError
